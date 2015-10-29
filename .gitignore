@@ -1,0 +1,15 @@
+.idea
+*sublime-project
+node_modules
+.DS_Store*
+.hubot_history
+*.iml
+npm-debug.log
+lib/bash_includes/dev*
+brain-dump.json
+*.log
+*.pid
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

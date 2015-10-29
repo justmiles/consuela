@@ -1,0 +1,2 @@
+# consuela
+A Hubot implementation
