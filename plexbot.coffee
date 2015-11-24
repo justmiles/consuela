@@ -82,7 +82,6 @@ startShell = () ->
 switch process.argv[2]
 
   when 'start'
-    #app.args = [ "#{__dirname}/node_modules/hubot/bin/hubot", "--name", app_package.name, '--adapter', 'shell'] if process.argv[3] == 'shell'
     return startShell() if process.argv[3] == 'shell'
     pm2.connect ->
       pm2.start app, (err, apps) ->

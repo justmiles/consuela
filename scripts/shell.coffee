@@ -21,7 +21,6 @@ module.exports = (robot) ->
   robot.shell = new Shell()
 
   robot.respond /(sh) (.*)/i, (msg) ->
-    if robot.auth.hasRole(msg.envelope.user, role)
       robot.shell.spawnCommand msg.match[2], msg
 
   robot.respond /(run|bash|exec) (.*)/i, (msg) ->
