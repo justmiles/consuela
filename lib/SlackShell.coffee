@@ -60,7 +60,6 @@ class SlackShell
             msg.send "```#{lines.slice(last, lines.length / splitter).join('\n')}```"
           msg.send "```#{lines.slice(lines.length / 2, lines.length + 1).join('\n')}```"
 
-        msg.send "```#{stdout.toString().length}```"
         msg.send "```#{stdout.toString()}```"
 
       if stderr? && stderr != ''
