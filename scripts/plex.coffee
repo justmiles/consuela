@@ -4,14 +4,15 @@
 #	 hubot clean torrents - Cleans finished torrents from the server
 #	 hubot search movies for <query> - Returns a list of available downloads
 
-uTorrent = require('../lib/utorrent.coffee')
-jsonQuery = require('json-query')
-scrape = require('scrape-url')
+uTorrent    = require '../lib/utorrent.coffee'
+jsonQuery   = require 'json-query'
+scrape      = require 'scrape-url'
+async       = require 'async'
 
 tpb = 'https://thepiratebay.cr'
 
-searchMovies = (query, max_results,  cb) ->
-  scrape "#{tpb}/search/#{query}/0/7/207", ['#searchResult a'], (error, matches) ->
+searchResource = (url, max_results,  cb) ->
+  scrape url, ['#searchResult a'], (error, matches) ->
     results = []
     for match in matches
       href = match[0].attribs.href
@@ -25,6 +26,14 @@ searchMovies = (query, max_results,  cb) ->
         if results.length > max_results
           return cb results
     return cb results
+
+searchMovies = (query, max_results,  cb) ->
+  searchResource "#{tpb}/search/#{query}/0/7/207", max_results, (res) ->
+    cb res
+
+searchTVShows = (query, max_results,  cb) ->
+  searchResource "#{tpb}/search/#{query}/0/7/208", max_results, (res) ->
+    cb res
 
 formatSizeUnits = (bytes) ->
   if bytes >= 1000000000
@@ -121,19 +130,21 @@ module.exports = (robot) ->
             content: attachment
 
   robot.respond /clean torrents/i, (msg) ->
+    num = 0
     uTorrentClient.listTorrents (err, res) ->
-      if (err)
-        robot.logger.error 'Failed to listTorrents'
-      else
-        for torrent in res
-          if !torrent.remaining > 0 #TODO: remove these based on status
-            uTorrentClient.removedataTorrent torrent.hash, (err, res) ->
-              if (err)
-                robot.logger.error err
+      return msg.send 'Failed to get torrents' if err
+      async.forEachOf res, ((torrent, key, callback) ->
+        return callback() unless torrent.remaining > 0 #TODO: remove these based on status
+        uTorrentClient.removedataTorrent torrent.hash, (err, res) ->
+          msg.send err if err
+          num += 1 unless err
+          callback()
+        ), (err) ->
+          msg.send "Cleaned up #{num} torrents!"
 
-  robot.respond /search movies for (.*)/i, (msg) ->
 
-    searchMovies msg.match[1], 5, (movies) ->
+  robot.respond /search (movies|shows) for (.*)/i, (msg) ->
+    processResults = (movies) ->
       if movies.length > 0
         robot.brain.data.movies = movies
         for movie,i in movies
@@ -162,6 +173,13 @@ module.exports = (robot) ->
 
       else
         msg.send 'No results'
+
+    switch msg.match[1]
+      when 'shows'
+        searchTVShows msg.match[2], 5, processResults
+      when 'movies'
+        searchMovies msg.match[2], 5, processResults
+
 
   robot.router.get '/start/:id', (req, res) ->
     if robot.brain.data.movies[req.params.id].magnet?
