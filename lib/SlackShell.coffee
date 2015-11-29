@@ -47,23 +47,36 @@ class SlackShell
         msg.reply "Command `#{command}` exited with exit code `#{code}`"
 
   execCommand : (command, msg) ->
+    respond = (str, wrap = '```') ->
+      len = 3000
+      _size = Math.ceil(str.length / len)
+      _ret = new Array(_size)
+      _offset = undefined
+      _i = 0
+      while _i < _size
+        _offset = _i * len
+        _ret[_i] = str.substring(_offset, _offset + len)
+        _i++
+
+      x = 0
+      setInterval (->
+        msg.send "#{wrap}#{_ret[x]}#{wrap}"
+        if _ret.length == x+1
+          clearInterval this
+        else
+          x++
+
+      ), 2000
+
     cp.exec command, (error, stdout, stderr) ->
-      msg.send "```#{error}```" if error?
+      respond error if error?
 
       if stdout? && stdout != ''
-        strlen = stdout.toString().length
-        if strlen > 3000
-          msg.send 'Splitting lines'
-          lines = stdout.toString().split('\n')
-          for splitter in [0..(Math.ceil(strlen/3000))]
-            last = splitter
-            msg.send "```#{lines.slice(last, lines.length / splitter).join('\n')}```"
-          msg.send "```#{lines.slice(lines.length / 2, lines.length + 1).join('\n')}```"
-
-        msg.send "```#{stdout.toString()}```"
+        respond stdout
 
       if stderr? && stderr != ''
-        msg.send "```STDERR: #{stderr.toString()}```"
+        msg.send "`STDERR:`"
+        respond stdout, '`'
 
   execLogCommand : (command, logger) ->
     cp.exec command, (error, stdout, stderr) ->
