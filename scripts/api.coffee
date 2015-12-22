@@ -6,8 +6,6 @@ module.exports = (robot) ->
     robot.messageRoom req.params.room, req.body.message
     res.send 'OK'
 
-
-module.exports = (robot) ->
   robot.router.get '/app', (req, res) ->
     res.json app
 
