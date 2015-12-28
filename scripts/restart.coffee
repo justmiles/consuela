@@ -6,6 +6,26 @@
 
 exec = require('child_process').exec
 shell = require('./shell')
+os    = require 'os'
+
+secondsToString = (seconds) ->
+  numyears = Math.floor(seconds / 31536000)
+  numdays = Math.floor(seconds % 31536000 / 86400)
+  numhours = Math.floor(seconds % 31536000 % 86400 / 3600)
+  numminutes = Math.floor(seconds % 31536000 % 86400 % 3600 / 60)
+  numseconds = (seconds % 31536000 % 86400 % 3600 % 60).toFixed(0)
+  time = ''
+  if numyears > 0
+    time += numyears + ' Years '
+  if numdays > 0
+    time += numdays + ' Days '
+  if numhours > 0
+    time += numhours + 'h '
+  if numminutes > 0
+    time += numminutes + 'm '
+  if numseconds > 0 or time == ''
+    time += numseconds + 's'
+  time
 
 module.exports = (robot) ->
 
@@ -18,7 +38,7 @@ module.exports = (robot) ->
     robot.shell.execCommand './bin/hubot-plex.sh update', msg
 
   robot.respond /status/i, (msg) ->
-    robot.shell.execCommand 'hostname', msg
+    msg.send "```Uptime: #{secondsToString(os.uptime())} \nLoad Avg (1m, 5m, 15m): #{os.loadavg().map((x)-> "#{Math.floor(x * 100)}%").join(', ')}```"
 
   robot.router.post '/hubot-plex/update', (req, res) ->
     res.send('OK');

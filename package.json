@@ -24,9 +24,9 @@
     "hubot-youtube": "^0.1.2",
     "json-query": "^1.5.0",
     "node-sandbox": "^0.1.0",
+    "qbittorrent-client": "0.0.1",
     "sandbox": "^0.8.6",
-    "scrape-url": "^1.0.3",
-    "util": "^0.10.3"
+    "scrape-url": "^1.0.3"
   },
   "engines": {
     "node": "0.12.x"

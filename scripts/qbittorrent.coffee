@@ -18,7 +18,7 @@
 async             = require 'async'
 cp                = require 'child_process'
 fs                = require 'fs'
-qBittorrent       = require 'qbtorrent-client'
+qBittorrent       = require 'qbittorrent-client'
 fixedWidthString  = require 'fixed-width-string'
 
 module.exports = (robot) ->
