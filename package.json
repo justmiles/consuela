@@ -18,6 +18,7 @@
     "hubot-google-images": "^0.1.2",
     "hubot-google-translate": "^0.1.0",
     "hubot-help": "^0.1.1",
+    "hubot-plex": "^1.0.0",
     "hubot-rules": "^0.1.0",
     "hubot-scripts": "2.5.16",
     "hubot-slack": "3.3.0",

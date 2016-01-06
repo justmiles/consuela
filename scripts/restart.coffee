@@ -4,9 +4,9 @@
 #	 hubot update - Updates hubot (requires rundeck_ops role).
 
 
-exec = require('child_process').exec
-shell = require('./shell')
-os    = require 'os'
+{exec} = require 'child_process'
+shell         = require './shell'
+os            = require 'os'
 
 secondsToString = (seconds) ->
   numyears = Math.floor(seconds / 31536000)
@@ -38,7 +38,7 @@ module.exports = (robot) ->
     robot.shell.execCommand './bin/hubot-plex.sh update', msg
 
   robot.respond /status/i, (msg) ->
-    msg.send "```Uptime: #{secondsToString(os.uptime())} \nLoad Avg (1m, 5m, 15m): #{os.loadavg().map((x)-> "#{Math.floor(x * 100)}%").join(', ')}```"
+    msg.send "```Hostname: #{os.hostname()}\nUptime: #{secondsToString(os.uptime())}\nLoad Avg (1m, 5m, 15m): #{os.loadavg().map((x)-> "#{Math.floor(x * 100)}%").join(', ')}```"
 
   robot.router.post '/hubot-plex/update', (req, res) ->
     res.send('OK');

@@ -22,7 +22,7 @@ qBittorrent       = require 'qbittorrent-client'
 fixedWidthString  = require 'fixed-width-string'
 
 module.exports = (robot) ->
-
+  return unless process.env.QBITTORRENT_HOST
   client = new qBittorrent
     username: process.env.QBITTORRENT_USERNAME
     password: process.env.QBITTORRENT_PASSWORD
