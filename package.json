@@ -1,15 +1,18 @@
 {
   "name": "consuela",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "private": true,
   "author": "justMiles",
   "description": "A personal hubot",
   "scripts": {
-    "start": "node node_modules/coffee-script/bin/coffee node_modules/hubot/bin/hubot --name consuela --adapter slack"
+    "start": "node node_modules/coffee-script/bin/coffee node_modules/hubot/bin/hubot --name consuela --adapter slack",
+    "TODO": "Save msg-catalog to firebase brain. Fix firebase brain"
   },
   "dependencies": {
     "async": "^1.5.1",
     "coffee-script": "1.9.0",
+    "firebase": "^2.4.0",
+    "firebase-token-generator": "^2.0.0",
     "fixed-width-string": "^1.0.0",
     "hubot": "2.12.0",
     "hubot-auth": "1.2.0",
@@ -21,12 +24,13 @@
     "hubot-plex": "^1.0.0",
     "hubot-rules": "^0.1.0",
     "hubot-scripts": "2.5.16",
+    "hubot-shell": "^1.0.0",
     "hubot-slack": "3.3.0",
     "hubot-youtube": "^0.1.2",
     "json-query": "^1.5.0",
     "node-sandbox": "^0.1.0",
     "node-uuid": "^1.4.7",
-    "qbittorrent-client": "0.0.2",
+    "qbittorrent-client": "^1.0.0",
     "sandbox": "^0.8.6",
     "scrape-url": "^1.0.3"
   },

@@ -1,5 +1,6 @@
 [
   "hubot-help",
   "hubot-firebase-brain",
-  "hubot-plex"
+  "hubot-plex",
+  "hubot-shell"
 ]

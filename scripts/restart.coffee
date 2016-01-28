@@ -5,8 +5,7 @@
 
 
 {exec} = require 'child_process'
-shell         = require './shell'
-os            = require 'os'
+os     = require 'os'
 
 secondsToString = (seconds) ->
   numyears = Math.floor(seconds / 31536000)
@@ -29,17 +28,5 @@ secondsToString = (seconds) ->
 
 module.exports = (robot) ->
 
-  robot.respond /restart/i, (msg) ->
-    msg.emote 'rebooting...'
-    robot.shell.execCommand './bin/hubot-plex.sh restart', msg
-
-  robot.respond /update/i, (msg) ->
-    msg.emote 'updating...'
-    robot.shell.execCommand './bin/hubot-plex.sh update', msg
-
   robot.respond /status/i, (msg) ->
     msg.send "```Hostname: #{os.hostname()}\nUptime: #{secondsToString(os.uptime())}\nLoad Avg (1m, 5m, 15m): #{os.loadavg().map((x)-> "#{Math.floor(x * 100)}%").join(', ')}```"
-
-  robot.router.post '/hubot-plex/update', (req, res) ->
-    res.send('OK');
-    robot.shell.execCommand './bin/hubot-plex.sh update', msg
