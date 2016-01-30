@@ -18,7 +18,7 @@
 async             = require 'async'
 cp                = require 'child_process'
 fs                = require 'fs'
-qBittorrent       = require 'qbittorrent-client'
+qBittorrent       = require('qbittorrent-client').API3
 fixedWidthString  = require 'fixed-width-string'
 jsonQuery   = require 'json-query'
 scrape      = require 'scrape-url'
@@ -151,6 +151,7 @@ module.exports = (robot) ->
 
   robot.respond /search (movies|shows) for (.*)/i, (msg) ->
     processResults = (movies) ->
+      console.log movies
       if movies.length > 0
         for movie,i in movies
           movieKey = uuid.v4()
