@@ -4,7 +4,7 @@ node_modules
 .DS_Store*
 .hubot_history
 *.iml
-npm-debug.log
+npm-debug.log*
 lib/bash_includes/dev*
 brain-dump.json
 *.log
