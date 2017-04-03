@@ -1,0 +1,4 @@
+build:
+  image: node
+  commands:
+    - npm test
