@@ -1,4 +1,5 @@
-build:
-  image: node
-  commands:
-    - npm test
+pipeline:
+  build:
+    image: node
+    commands:
+      - npm test
