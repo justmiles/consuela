@@ -81,4 +81,4 @@ module.exports = (robot) ->
       msg.send Object.keys(user.preferences).toString()
 
     else
-      msg.send 'No preferences defined.'
+      msg.send 'Good job, minimalist. You have no preferences.'

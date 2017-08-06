@@ -3,6 +3,11 @@
 #
 # Commands:
 #   hubot get torrents - Returns full list of torrents
+#   hubot pause all torrents - Pauses all torrents
+#   hubot resume all torrents - Resume the download/upload process for all torrents
+#   hubot get torrent contents for <qBittorrent hash> - Display the contents of a torrent
+#   hubot get torrent trackers for <qBittorrent hash> - Display the trackers for a torrent
+#   torrent <qBittorrent hash> - Display meta information for torrent
 #
 #
 # Configuration:
@@ -21,7 +26,6 @@ fs                = require 'fs'
 qBittorrent       = require('qbittorrent-client').API3
 fixedWidthString  = require 'fixed-width-string'
 jsonQuery   = require 'json-query'
-scrape      = require 'scrape-url'
 async       = require 'async'
 uuid        = require 'node-uuid'
 
@@ -32,24 +36,6 @@ module.exports = (robot) ->
     password: process.env.QBITTORRENT_PASSWORD
     host: process.env.QBITTORRENT_HOST
     port: process.env.QBITTORRENT_PORT
-
-  tpb = 'https://thepiratebay.cr'
-
-  searchResource = (url, max_results,  cb) ->
-    scrape url, ['#searchResult a'], (error, matches) ->
-      results = []
-      for match in matches
-        href = match[0].attribs.href
-        if href.match /^magnet/
-          result =
-            title: match[0].parent.children[1].children[1].children[0].data
-            magnet: href
-            seeders: match[0].parent.next.next.children[0].data
-            leechers: match[0].parent.next.next.next.next.children[0].data
-          results.push result
-          if results.length > max_results
-            return cb results
-      return cb results
 
   searchMovies = (query, max_results,  cb) ->
     searchResource "#{tpb}/search/#{query}/0/7/207", max_results, (res) ->
@@ -118,7 +104,6 @@ module.exports = (robot) ->
     ), () ->
       msg.send "```#{response}```"
 
-
   robot.respond /(get|list|show) torrents/i, (msg) ->
     client.getTorrents (err, res) ->
       slackTorrents msg, JSON.parse(res) if res
@@ -181,8 +166,6 @@ module.exports = (robot) ->
               room: msg.message.room
             content: attachment
 
-
-
       else
         msg.send 'No results'
 
@@ -191,7 +174,6 @@ module.exports = (robot) ->
         searchTVShows msg.match[2], 5, processResults
       when 'movies'
         searchMovies msg.match[2], 5, processResults
-
 
   robot.router.get '/start/:id', (req, res) ->
     if robot.brain.data.torrents[req.params.id].magnet?
