@@ -2,4 +2,4 @@
 
 cd $(dirname $(readlink -f $0))/../
 
-./node_modules/coffee-script/bin/coffee ./node_modules/hubot/bin/hubot $@
+./node_modules/coffee-script/bin/coffee ./node_modules/hubot/bin/hubot --name consuela $@

@@ -47,4 +47,4 @@ EXPOSE 8080
 
 ENTRYPOINT ["/usr/src/app/bin/consuela"]
 
-CMD ["--name consuela","--adapter slack"]
+CMD ["--adapter slack"]

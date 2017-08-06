@@ -6,12 +6,12 @@
   "description": "A personal hubot",
   "scripts": {
     "start": "node node_modules/coffee-script/bin/coffee node_modules/hubot/bin/hubot --name consuela --adapter slack",
-    "dev": "coffee --nodejs --debug node_modules/coffee-script/bin/coffee node_modules/hubot/bin/hubot --name consuela --adapter slack",
-    "TODO": "Save msg-catalog to firebase brain. Fix firebase brain"
+    "dev": "./bin/consuela"
   },
   "dependencies": {
     "async": "^1.5.1",
     "coffee-script": "1.9.0",
+    "datejs": "^1.0.0-rc3",
     "firebase-token-generator": "^2.0.0",
     "fixed-width-string": "^1.0.0",
     "hubot": "^2.19.0",
